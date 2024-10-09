@@ -1,0 +1,48 @@
+name: Selenium Tests
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # Run every 10 minutes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12.6'  # Use your preferred Python version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install selenium pytest webdriver-manager pandas
+
+      - name: Run Monthly tests
+        run: pytest test_GCSEMATHEMATICSSOLUTIONS.py
+        run: pytest test_11PLUSANSWERSANDQUIZZES.py
+        run: pytest test_11PLUSANSWERSSOLUTIONS.py
+        run: pytest test_13PLUSANSWERSANDQUIZZES.py
+        run: pytest test_13PLUSANSWERSSOLUTIONS.py
+
+      - name: Run Monthly tests
+        run: pytest test_GCSEMATHEMATICSSOLUTIONS2.py
+        run: pytest test_11PLUSANSWERSANDQUIZZES2.py
+        run: pytest test_11PLUSANSWERSSOLUTIONS2.py
+        run: pytest test_13PLUSANSWERSANDQUIZZES2.py
+        run: pytest test_13PLUSANSWERSSOLUTIONS2.py
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: screenshots/*.png
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test_results.csv
